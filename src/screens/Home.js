@@ -7,7 +7,7 @@ import "./Home.css"
 
 export default function Home() {
     return (
-        <div className="container">
+        <div className="home" >
             <Logo title="Rent-a-car" subTitle="Administrator App" />
             <div className="buttons">
                 <Button size="lg">Ver Autos</Button>
