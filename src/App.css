@@ -1,6 +1,8 @@
-.AppContainer {
+.container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }

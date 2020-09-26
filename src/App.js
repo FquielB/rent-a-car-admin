@@ -1,12 +1,18 @@
 import React from 'react';
-import Home from './screens/Home/Home';
+import { AddCar, Home } from './screens';
 import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="AppContainer">
-      <Home/>
-    </div>
+    <Router>
+      <div className="container">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/addcar" component={AddCar} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
