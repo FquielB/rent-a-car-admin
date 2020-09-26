@@ -1,12 +1,10 @@
 import React from 'react'
 import { Header, CarForm } from '../components'
 
-import './AddCar.css'
-
-export default function AddCar() {
+export default function EditCar() {
     return (
         <div>
-            <Header title="Nuevo Auto"/>
+            <Header title="Editar Auto"/>
             <CarForm />
         </div>
     )

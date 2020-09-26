@@ -1,0 +1,11 @@
+.header {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+    height: 70px;
+    background: #DE9292;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    line-height: 70px;
+}
