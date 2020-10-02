@@ -1,0 +1,13 @@
+.listCard {
+    background-color: #FFCCCC !important;
+    width: 80%;
+    left: 10%;
+    padding: 15px;
+    border-width: 0px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.vehicle {
+    margin-bottom: 5px;
+}
