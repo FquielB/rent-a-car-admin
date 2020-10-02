@@ -8,5 +8,5 @@
 ## Para buildear:
 ### npm run build 
 
-## Para servirlo en el puerto predeterminado
+## Para servirlo en el puerto predeterminado:
 ### npm start
