@@ -1,7 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
-import { Logo } from '../components'
-import { Link } from 'react-router-dom'
+import { LinkButton, Logo } from '../components'
 
 import "./Home.css"
 
@@ -12,16 +10,18 @@ export default function Home() {
         <div className="home" >
             <Logo title="Rent-a-car" subTitle="Administrator App" />
             <div className="buttons">
-                <Link to="/listcar">
-                    <Button size="lg">
-                            Ver Autos   
-                    </Button>
-                </Link>
-                <Link to="/addcar">
-                    <Button size="lg">
-                            Agregar Autos
-                    </Button>
-                </Link>
+                <LinkButton 
+                    size="lg"
+                    to='/listcar'
+                    content='Ver Autos'
+                    className="homeBtn"
+                    />
+                <LinkButton 
+                    size="lg"
+                    to='/addcar'
+                    content='Agregar Auto'
+                    className="homeBtn"
+                    />
             </div>
         </div>
     )

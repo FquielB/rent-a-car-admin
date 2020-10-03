@@ -3,9 +3,9 @@ import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
 import './Input.css'
 
-export default function Input({ label, placeholder, onChange, type, value }) {
+export default function Input({ label, placeholder, onChange, type, value, className="" }) {
     return (
-        <FormGroup className="input">
+        <FormGroup className={`input ${className}`} >
             <FormLabel>{label}</FormLabel>
             <FormControl 
                 type={type}

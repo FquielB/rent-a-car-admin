@@ -1,0 +1,21 @@
+.listCard {
+    background-color: #FFCCCC !important;
+    width: 80%;
+    left: 10%;
+    padding: 15px;
+    border-width: 0px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.vehicle {
+    margin-bottom: 8px;
+    display: flex!important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.listItemBtn {
+    margin-left: 20px;
+    width: 150px;
+}
