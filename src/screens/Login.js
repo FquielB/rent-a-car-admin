@@ -17,7 +17,7 @@ export default function Login() {
 
     function postLogin() {
         const headers = { 
-            'x-api-key': '38E562721ACB3769C4'
+            'x-api-key': ''
         }
         const data = {
             username,
