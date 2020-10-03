@@ -9,5 +9,13 @@
 }
 
 .vehicle {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    display: flex!important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.listItemBtn {
+    margin-left: 20px;
+    width: 150px;
 }
