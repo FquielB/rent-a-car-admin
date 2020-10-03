@@ -1,13 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 export default function LinkButton({ size="lg", to="/", content="", className="" }) {
+    const history = useHistory();
+
     return (
-            <Link to={to} >
-                <Button size={size} className={className} >
-                    {content}   
-                </Button>
-            </Link>
+        <Button size={size} 
+            onClick={() => history.push(to)}
+            className={className}>
+            {content}   
+        </Button>
     )
 }
