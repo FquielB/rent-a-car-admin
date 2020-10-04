@@ -11,3 +11,8 @@
     justify-content: center;
     width: 100%;
 }
+
+.homeBtn {
+    margin: 40px 0;
+    width: 200px;
+}

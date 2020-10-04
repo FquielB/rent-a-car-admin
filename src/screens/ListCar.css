@@ -1,0 +1,9 @@
+.list {
+    align-items: center ;
+    justify-content: center;
+}
+
+.search {
+    width: 80%;
+    margin-left: 10%;
+}
