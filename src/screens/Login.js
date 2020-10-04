@@ -19,12 +19,13 @@ export default function Login(props) {
 
     function postLogin() {
         const headers = { 
-            'x-api-key': '38E562721ACB3769C4'
+            'x-api-key': process.env.REACT_APP_API_KEY
         }
         const data = {
             username,
             password
         }
+
         axios.post("https://ssoia.herokuapp.com/Login", data,{
             headers
         }).then(result => {
