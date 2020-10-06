@@ -4,17 +4,21 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { DELETE_CAR_DATA } from '../actions/Actions'
 import { useDispatch } from 'react-redux'
-import { headers } from '../utils/Utils'
+import { useAuth } from '../context/auth'
 
 export default function EditCar() {
 
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const  { authTokens } = useAuth();
 
     const onFinish = carData => {
-        console.log("editado", carData)
-        axios.put(`https://rent-a-car-uade.herokuapp.com/vehicles`, carData, { headers })
+        const headers = {
+            'Authorization': authTokens.token
+        }
+        console.log(carData, carData.vehicle.id)
+        axios.put(`https://rent-a-car-uade.herokuapp.com/vehicles/${carData.vehicle.id}`, carData , { headers })
         .catch(error => alert("no se ha podido editar el auto", error))
         dispatch({ type: DELETE_CAR_DATA })
         history.goBack();

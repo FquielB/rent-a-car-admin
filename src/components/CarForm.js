@@ -4,6 +4,7 @@ import { Input, DropdownSelect } from './'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { toBase64 } from '../utils/Utils'
+import { useAuth } from '../context/auth'
 
 import './CarForm.css'
 
@@ -30,9 +31,15 @@ export default function CarForm({ onFinish }) {
 
     const carData = useSelector( state => state )
     const fileRef = useRef()
+    const { authTokens } = useAuth();
 
     useEffect(() => {
-        axios.get('https://rent-a-car-uade.herokuapp.com/brands')
+
+        const headers = {
+            'Authorization': authTokens.token
+        }
+
+        axios.get('https://rent-a-car-uade.herokuapp.com/brands', { headers })
         .then( res => setAvailableBrands(res.data.brands))
         .catch( error => alert("No se han podido obtener marcas", error ))
         
@@ -40,13 +47,12 @@ export default function CarForm({ onFinish }) {
         .then( res => setAvailableAiports(res.data))
         .catch(error => alert("No se han podido obtener los aeropuertos", error))
 
-        axios.get('https://rent-a-car-uade.herokuapp.com/categories')
+        axios.get('https://rent-a-car-uade.herokuapp.com/categories', { headers })
         .then(res => setAvailableCategories(res.data))
         .catch( error => alert("No se han podido obtener las categorias", error))
 
         if(carData && carData.active && carData.id)
         {
-            console.log(carData)
             setTrunkCapacity(carData.trunkCapacity)
             setPrice(carData.price)
             setAutonomy(carData.autonomy)
@@ -61,13 +67,16 @@ export default function CarForm({ onFinish }) {
             setCapacity(carData.capacity)
             setId(carData.id)
         }
-    }, [carData])    
+    }, [carData, authTokens])    
 
     const onBrandSelect = e => {
+        const headers = {
+            'Authorization': authTokens.token
+        }
         e.preventDefault()
         setCarModel("")
         setCarBrand(e.target.value)
-        axios.get(`https://rent-a-car-uade.herokuapp.com/models/${e.target.id}`)
+        axios.get(`https://rent-a-car-uade.herokuapp.com/models/${e.target.id}`, { headers })
         .then( res => setAvailableModels(res.data.models))
         .catch( error => alert("No se han podido obtener marcas", error ))
     }
