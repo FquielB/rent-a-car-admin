@@ -7,6 +7,7 @@ import './ListCar.css'
 
 export default function ListCar() {
     const [ vehicles , setVehicles ] = useState(null)
+    const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles)
 
     const { authTokens } = useAuth();
 
@@ -23,6 +24,7 @@ export default function ListCar() {
         .then( 
             res => {
                 setVehicles(res.data.vehicles)
+                setFilteredVehicles(res.data.vehicles)
             })
         .catch( error => alert("Un error ha ocurrido", error))
     }
@@ -40,13 +42,19 @@ export default function ListCar() {
         getVehicles()
     }
 
+    const processFilter = value => {
+        setFilteredVehicles(vehicles.filter(vehicle => vehicle.brand.includes(value)))
+    }
+
     return (
         <div className="list">
             <Header title="Lista de autos" />
             <Input 
                 className="search"
-                placeholder="Buscar..." />
-            <Vehicles vehicles={vehicles} onDelete={onDelete} />
+                placeholder="Buscar..."
+                onChange={processFilter}
+                 />
+            <Vehicles vehicles={filteredVehicles} onDelete={onDelete} />
             <Footer />
         </div>
     )
