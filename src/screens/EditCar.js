@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { DELETE_CAR_DATA } from '../actions/Actions'
 import { useDispatch } from 'react-redux'
+import { headers } from '../utils/Utils'
 
 export default function EditCar() {
 
@@ -13,7 +14,7 @@ export default function EditCar() {
 
     const onFinish = carData => {
         console.log("editado", carData)
-        axios.put(`https://rent-a-car-uade.herokuapp.com/vehicles`, carData)
+        axios.put(`https://rent-a-car-uade.herokuapp.com/vehicles`, carData, { headers })
         .catch(error => alert("no se ha podido editar el auto", error))
         dispatch({ type: DELETE_CAR_DATA })
         history.goBack();
