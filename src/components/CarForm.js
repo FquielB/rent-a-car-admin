@@ -26,8 +26,8 @@ export default function CarForm({ onFinish }) {
 
     const [ availableBrands, setAvailableBrands] = useState(null)
     const [ availableModels, setAvailableModels] = useState(null)
-    const [ availabeAirports, setAvailableAiports ] = useState(null)
-    const [ availabeCategories, setAvailableCategories ] = useState(null)
+    const [ availableAirports, setAvailableAiports ] = useState(null)
+    const [ availableCategories, setAvailableCategories ] = useState(null)
 
     const carData = useSelector( state => state )
     const fileRef = useRef()
@@ -43,7 +43,7 @@ export default function CarForm({ onFinish }) {
         .then( res => setAvailableBrands(res.data.brands))
         .catch( error => alert("No se han podido obtener marcas", error ))
         
-        axios.get('http://itinerarios-back.herokuapp.com/itinerarios/rest/aeropuertos/')
+        axios.get('https://itinerarios-back.herokuapp.com/itinerarios/rest/aeropuertos/')
         .then( res => setAvailableAiports(res.data))
         .catch(error => alert("No se han podido obtener los aeropuertos", error))
 
@@ -172,7 +172,7 @@ export default function CarForm({ onFinish }) {
                 <DropdownSelect
                     className="dropdownSelect"
                     title={airport === "" ? "Selecciona un aeropuerto" : airport}
-                    data={availabeAirports}
+                    data={availableAirports}
                     onSelect={onAirportSelect}
                 />
                 <DropdownSelect
@@ -190,7 +190,7 @@ export default function CarForm({ onFinish }) {
                 <DropdownSelect
                     className="dropdownSelect"
                     title={category === "" ? "Selecciona una categoria" : category}
-                    data={availabeCategories}
+                    data={availableCategories}
                     onSelect={onBrandSelect}
                 />
             </Form.Row>
