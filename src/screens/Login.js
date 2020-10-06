@@ -70,6 +70,7 @@ export default function Login(props) {
             <Button size="lg" onClick={postLogin}>
                             Login
             </Button>
+            { isError ? <p>Usuario y contraseña incorrectos</p>: null}
         </div>
     )
 }
