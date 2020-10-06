@@ -2,10 +2,16 @@
 ### `npm i`
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Para correrlo local:
+### npm run dev
 
-## Available Scripts
+## Para buildear:
+### npm run build 
 
+<<<<<<< HEAD
+## Para servirlo en el puerto predeterminado:
+### npm start
+=======
 In the project directory, you can run:
 
 ### `npm start`
@@ -66,3 +72,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 ### Deployment
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+>>>>>>> d8c26a19d218af05d1aae27d1c256e290ed28363

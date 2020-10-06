@@ -1,0 +1,23 @@
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.input{
+    align-self: center
+}

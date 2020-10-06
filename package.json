@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "react": "^16.13.1",
@@ -41,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }
