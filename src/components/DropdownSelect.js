@@ -11,9 +11,13 @@ export default function DropdownSelect({ data, onSelect, title, className="" }) 
                 data ? 
                 data.map( value => 
                         <Dropdown.Item 
-                                key={value.id}
+                            as="button"
+                            onClick={onSelect}
+                            key={value.id}
+                            id={value.id}
+                            value={value.name ? value.name : value.acronimo}
                         >
-                            {value.name}
+                            {value.name ? value.name : value.acronimo}
                         </Dropdown.Item>
                     )
                 :
