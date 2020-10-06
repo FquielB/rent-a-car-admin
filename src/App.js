@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import { AddCar, Home, EditCar, ListCar, Login} from './screens';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import CarReducer from './reducers/CarReducer'
 
 import './App.css';
 import { AuthContext } from './context/auth';

@@ -10,7 +10,7 @@ export default function Input({ label, placeholder, onChange, type, value, class
             <FormControl 
                 type={type}
                 placeholder={placeholder}
-                onChange={onChange}
+                onChange={e => onChange(e.target.value)}
                 value={value}
                 />
         </FormGroup>

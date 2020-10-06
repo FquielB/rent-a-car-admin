@@ -1,0 +1,3 @@
+export const ADD_CAR_DATA='ADD_CAR_DATA'
+
+export const DELETE_CAR_DATA='DELETE_CAR_DATA'
