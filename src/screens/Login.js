@@ -54,22 +54,26 @@ export default function Login(props) {
                     className='input' 
                     placeholder="email"
                     value={username} 
-                    onChange={e => {
-                        setUsername(e.target.value);
-                    }}
+                    onChange={setUsername}
                     />
                 <Input 
                     type="password"
                     value={password} 
                     className='input' 
                     placeholder="password" 
-                    onChange={e => {
-                        setPassword(e.target.value);
-                    }}/>
+                    onChange={setPassword}/>
             </div>
             <Button size="lg" onClick={postLogin}>
                             Login
             </Button>
+            {isError ? <p style={{  marginTop: '10px',
+                                    color: 'red', 
+                                    fontWeight: 'bold',
+                                    fontSize: '17px' }}>
+                          Credenciales inválidas!
+                        </p> 
+                      : 
+                        null}
         </div>
     )
 }
