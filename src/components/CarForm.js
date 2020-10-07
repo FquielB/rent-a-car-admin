@@ -48,7 +48,7 @@ export default function CarForm({ onFinish }) {
         .catch(error => alert("No se han podido obtener los aeropuertos", error))
 
         axios.get('https://rent-a-car-uade.herokuapp.com/categories', { headers })
-        .then(res => setAvailableCategories(res.data))
+        .then(res => setAvailableCategories(res.data.categories))
         .catch( error => alert("No se han podido obtener las categorias", error))
 
         if(carData && carData.active && carData.id)
