@@ -69,6 +69,11 @@ export default function CarForm({ onFinish }) {
         }
     }, [carData, authTokens])    
 
+    const onCategorySelect = e => {
+        e.preventDefault()
+        setCategory(e.target.value)
+    }
+
     const onBrandSelect = e => {
         const headers = {
             'Authorization': authTokens.token
@@ -97,44 +102,25 @@ export default function CarForm({ onFinish }) {
     }
 
     const processForm = () =>{
-        var formData = {}
+        var formData = {
+            vehicle: {
+                airport,
+                capacity,
+                url: image,
+                trunkCapacity,
+                doors,
+                brand: carBrand,
+                model: carModel,
+                category,
+                autonomy,
+                gearBox,
+                active: true,
+                extras: features,
+                price
+            }
+        }
         if( id !== "")
-            formData = {
-                vehicle: {
-                    airport,
-                    capacity,
-                    url: image,
-                    trunkCapacity,
-                    doors,
-                    brand: carBrand,
-                    model: carModel,
-                    category,
-                    autonomy,
-                    gearBox,
-                    active: true,
-                    extras: features,
-                    price,
-                    id
-                }
-            }
-        else
-            formData = {
-                vehicle: {
-                    airport,
-                    capacity,
-                    url: image,
-                    trunkCapacity,
-                    doors,
-                    brand: carBrand,
-                    model: carModel,
-                    category,
-                    autonomy,
-                    gearBox,
-                    active: true,
-                    extras: features,
-                    price
-                }
-            }
+            formData.vehicle.id = id
         onFinish(formData)
         emptyFields()
     }
@@ -191,7 +177,7 @@ export default function CarForm({ onFinish }) {
                     className="dropdownSelect"
                     title={category === "" ? "Selecciona una categoria" : category}
                     data={availableCategories}
-                    onSelect={onBrandSelect}
+                    onSelect={onCategorySelect}
                 />
             </Form.Row>
             <Form.Row>
