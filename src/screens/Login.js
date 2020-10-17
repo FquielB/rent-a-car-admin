@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Logo, Input } from '../components'
 import { Button } from 'react-bootstrap'
 import axios from 'axios';
-import {  Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { useAuth } from "../context/auth";
 
 import "./Login.css"
@@ -36,6 +36,7 @@ export default function Login(props) {
             setIsError(true);
           }
         }).catch(e => {
+          console.log(e)
           setIsError(true);
         });
       }
@@ -54,14 +55,14 @@ export default function Login(props) {
                     className='input' 
                     placeholder="email"
                     value={username} 
-                    onChange={setUsername}
+                    onChange={e => setUsername(e.target.value)}
                     />
                 <Input 
                     type="password"
                     value={password} 
                     className='input' 
                     placeholder="password" 
-                    onChange={setPassword}/>
+                    onChange={e => setPassword(e.target.value)}/>
             </div>
             <Button size="lg" onClick={postLogin}>
                             Login

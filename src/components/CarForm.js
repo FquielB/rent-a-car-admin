@@ -1,224 +1,196 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Button, Form, Popover, OverlayTrigger } from 'react-bootstrap'
-import { Input, DropdownSelect } from './'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
-import { toBase64 } from '../utils/Utils'
-import { useAuth } from '../context/auth'
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Form, Popover, OverlayTrigger } from 'react-bootstrap';
+import { Input, DropdownSelect } from './';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useAuth } from '../context/auth';
 
-import './CarForm.css'
+import { toBase64 } from '../utils/Functions';
+import { 
+    MODEL,
+    BRAND,
+    CAPACITY,
+    CATEGORY,
+    AIRPORT,
+    AUTONOMY,
+    DOORS,
+    GEARBOX,
+    EXTRAS,
+    PRICE,
+    ID,
+    TRUNKCAPACITY,
+    URL
+} from '../utils/Constants';
+
+import './CarForm.css';
+
 
 export default function CarForm({ onFinish }) {
-    const [ carBrand, setCarBrand ] = useState("")
-    const [ carModel, setCarModel ] = useState("")
-    const [ airport, setAirport ] = useState("")
-    const [ doors, setDoors] = useState(0)
-    const [ capacity, setCapacity ] = useState(0)
-    const [ trunkCapacity, setTrunkCapacity ] = useState(0)
-    const [ image, setImage ] = useState("")
-    const [ category, setCategory ] = useState("")
-    const [ autonomy, setAutonomy ] = useState(0)
-    const [ gearBox, setGearBox ] = useState("")
-    const [ singleFeature, setSingleFeature ] = useState("")
-    const [ features, setFeatures ] = useState([])
-    const [ price, setPrice ] = useState(0)
-    const [ id, setId ] = useState("")
-
-    const [ availableBrands, setAvailableBrands] = useState(null)
-    const [ availableModels, setAvailableModels] = useState(null)
-    const [ availableAirports, setAvailableAiports ] = useState(null)
-    const [ availableCategories, setAvailableCategories ] = useState(null)
-
-    const carData = useSelector( state => state )
-    const fileRef = useRef()
+    const carData = useSelector( state => state );
+    const dispatch = useDispatch();
+    
+    const fileRef = useRef();
     const { authTokens } = useAuth();
 
+    const [ formData, setFormData ] = useState(carData);
+    const [ singleExtra, setSingleExtra ] = useState("");
+
+    const [ availableBrands, setAvailableBrands] = useState(null);
+    const [ availableModels, setAvailableModels] = useState(null);
+    const [ availableAirports, setAvailableAiports ] = useState(null);
+    const [ availableCategories, setAvailableCategories ] = useState(null);
+
+
+    const [ headers, setHeaders ] = useState({'Authorization': authTokens.token});
+
     useEffect(() => {
-
-        const headers = {
-            'Authorization': authTokens.token
-        }
-
         axios.get('https://rent-a-car-uade.herokuapp.com/brands', { headers })
         .then( res => setAvailableBrands(res.data.brands))
-        .catch( error => alert("No se han podido obtener marcas", error ))
+        .catch( error => alert("No se han podido obtener marcas", error ));
         
         axios.get('https://itinerarios-back.herokuapp.com/itinerarios/rest/aeropuertos/')
         .then( res => setAvailableAiports(res.data))
-        .catch(error => alert("No se han podido obtener los aeropuertos", error))
+        .catch(error => alert("No se han podido obtener los aeropuertos", error));
 
         axios.get('https://rent-a-car-uade.herokuapp.com/categories', { headers })
         .then(res => setAvailableCategories(res.data.categories))
-        .catch( error => alert("No se han podido obtener las categorias", error))
+        .catch( error => alert("No se han podido obtener las categorias", error));
 
-        if(carData && carData.active && carData.id)
-        {
-            setTrunkCapacity(carData.trunkCapacity)
-            setPrice(carData.price)
-            setAutonomy(carData.autonomy)
-            setAirport(carData.airport)
-            setImage(carData.url)
-            setGearBox(carData.gearBox)
-            setFeatures(carData.extras)
-            setCarModel(carData.model)
-            setCarBrand(carData.brand)
-            setDoors(carData.doors)
-            setCategory(carData.category)
-            setCapacity(carData.capacity)
-            setId(carData.id)
-        }
-    }, [carData, authTokens])    
-
-    const onCategorySelect = e => {
-        e.preventDefault()
-        setCategory(e.target.value)
-    }
+    }, [headers]);
 
     const onBrandSelect = e => {
-        const headers = {
-            'Authorization': authTokens.token
-        }
-        e.preventDefault()
-        setCarModel("")
-        setCarBrand(e.target.value)
-        axios.get(`https://rent-a-car-uade.herokuapp.com/models/${e.target.id}`, { headers })
+        e.preventDefault();
+        const { name, value, id } = e.target;
+        
+        setFormData({
+            ...formData,
+            [MODEL]: ""
+        });
+
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+
+        axios.get(`https://rent-a-car-uade.herokuapp.com/models/${id}`, { headers })
         .then( res => setAvailableModels(res.data.models))
-        .catch( error => alert("No se han podido obtener marcas", error ))
-    }
+        .catch( error => alert("No se han podido obtener marcas", error ));
+    };
 
-    const onModelSelect = e => {
-        e.preventDefault()
-        setCarModel(e.target.value)
-    }
-
-    const onAirportSelect = e => {
-        e.preventDefault()
-        setAirport(e.target.value)
-    }
-
-    const onGearBoxSelect = e => {
-        e.preventDefault()
-        setGearBox(e.target.value)
-    }
+    const onChange = e => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
     const processForm = () =>{
-        var formData = {
-            vehicle: {
-                airport,
-                capacity,
-                url: image,
-                trunkCapacity,
-                doors,
-                brand: carBrand,
-                model: carModel,
-                category,
-                autonomy,
-                gearBox,
-                active: true,
-                extras: features,
-                price
-            }
-        }
-        if( id !== "")
-            formData.vehicle.id = id
-        onFinish(formData)
-        emptyFields()
-    }
+        var data = {
+            vehicle: formData
+        };
+        onFinish(data);
+        dispatch({ type: DELETE_CAR_DATA });
+    };
 
-    const emptyFields = () =>{
-        setTrunkCapacity(0)
-            setAutonomy(0)
-            setAirport("")
-            setImage("")
-            setGearBox("")
-            setFeatures([])
-            setCarModel("")
-            setCarBrand("")
-            setDoors(0)
-            setCategory("")
-            setCapacity(0)
-            setId(0)
-            setPrice(0)
-    }
-
-    const addFeature = () => {
-        setFeatures(features.concat(singleFeature))
-        setSingleFeature("")
-    }
+    const addExtra = () => {
+        setFormData({
+            ...formData,
+            [EXTRAS]: formData[EXTRAS].concat(singleExtra)
+        });
+        setSingleExtra("");
+    };
 
     const processImage = e => {
-        e.preventDefault()
-        const files = Array.from(e.target.files)
-        toBase64(files[0]).then(processedFile => setImage(files[0].name))
-    }
+        e.preventDefault();
+        const { files } = e.target;
+
+        const datafiles = Array.from(files);
+        toBase64(datafiles[0]).then(processedFile => 
+            setFormData({
+                ...formData,
+                [URL]:datafiles[0].name
+            })
+        );
+    };
 
     return (
         <Form>
             <Form.Row>
                 <DropdownSelect
+                    name={AIRPORT}
                     className="dropdownSelect"
-                    title={airport === "" ? "Selecciona un aeropuerto" : airport}
+                    title={formData[AIRPORT] === "" ? "Selecciona un aeropuerto" : formData[AIRPORT]}
                     data={availableAirports}
-                    onSelect={onAirportSelect}
+                    onSelect={onChange}
                 />
                 <DropdownSelect
+                    name={BRAND}
                     className="dropdownSelect"
-                    title={carBrand === "" ? "Selecciona una marca" : carBrand}
+                    title={formData[BRAND] === "" ? "Selecciona una marca" : formData[BRAND]}
                     data={availableBrands}
                     onSelect={onBrandSelect}
                 />
                 <DropdownSelect
+                        name={MODEL}
                         className="dropdownSelect"
-                        title={carModel === "" ? "Seleccione un modelo" : carModel}
+                        title={formData[MODEL] === "" ? "Seleccione un modelo" : formData[MODEL]}
                         data={availableModels}
-                        onSelect={onModelSelect}
+                        onSelect={onChange}
                     /> 
                 <DropdownSelect
+                    name={CATEGORY}
                     className="dropdownSelect"
-                    title={category === "" ? "Selecciona una categoria" : category}
+                    title={formData[CATEGORY] === "" ? "Selecciona una categoria" : formData[CATEGORY]}
                     data={availableCategories}
-                    onSelect={onCategorySelect}
+                    onSelect={onChange}
                 />
             </Form.Row>
             <Form.Row>
                 <Input 
                     label="Cantidad de puertas"
-                    type="text"
+                    type="number"
                     placeholder="Ingrese..."
-                    value={doors}
-                    onChange={setDoors} />
+                    value={formData[DOORS]}
+                    onChange={onChange} />
                 <Input 
                     label="Capacidad"
-                    type="text"
+                    type="number"
                     placeholder="Ingrese..."
-                    value={capacity}
-                    onChange={setCapacity} />
+                    value={formData[CAPACITY]}
+                    onChange={onChange} />
                 <Input 
                     label="Capacidad del baúl"
-                    type="text"
+                    type="number"
                     placeholder="Ingrese..."
-                    value={trunkCapacity}
-                    onChange={setTrunkCapacity} />
+                    value={formData[TRUNKCAPACITY]}
+                    onChange={onChange} />
                 <Input 
                     label="Autonomia"
-                    type="text"
+                    type="number"
                     placeholder="Ingrese..."
-                    value={autonomy}
-                    onChange={setAutonomy} />
+                    value={formData[AUTONOMY]}
+                    onChange={onChange} />
             </Form.Row>
             <Form.Row>
                 <Input 
                     label="Extra"
                     type="text"
                     placeholder="Ingrese..."
-                    value={singleFeature}
-                    onChange={setSingleFeature} />
-                <Button className="featuresButtonAdd" onClick={addFeature}>Agregar</Button>
+                    value={singleExtra}
+                    onChange={setSingleExtra} />
+                <Button className="featuresButtonAdd" onClick={addExtra}>Agregar</Button>
                 <OverlayTrigger className="featuresOverlay" trigger="click" placement="right" overlay={
                     <Popover id="popover-basic">
                         <Popover.Title as="h3">Extras</Popover.Title>
                         <Popover.Content>
-                            {features.length > 0 ? features.map(feature => <p key={feature}>{feature}</p>) : <p>Este vehiculo no tiene extras</p>}
+                            {   formData[EXTRAS].length > 0 ? 
+                                    formData[EXTRAS].map(extra => <p key={extra}>{extra}</p>) 
+                                : 
+                                    <p>Este vehiculo no tiene extras</p>
+                            }
                         </Popover.Content>
                     </Popover>
                 }>
@@ -228,19 +200,19 @@ export default function CarForm({ onFinish }) {
             <Form.Row>
                 <Input 
                     label="Precio"
-                    type="text"
+                    type="number"
                     placeholder="Ingrese..."
-                    value={price}
-                    onChange={setPrice} />
+                    value={formData[PRICE]}
+                    onChange={onChange} />
                 <Form.File.Label >
                     Sube una imagen
                     <Form.File.Input accept="image/png, image/jpeg" className="imageUploader" id="carImage" ref={fileRef} onChange={processImage} />
                 </Form.File.Label>
                 <DropdownSelect
                     className="dropdownSelect"
-                    title={gearBox === "" ? "Selecciona el tipo de caja" : gearBox}
+                    title={formData[GEARBOX] === "" ? "Selecciona el tipo de caja" : formData[GEARBOX]}
                     data={[{id: 0, name: "automatic"},{id:1, name: "manual"}]}
-                    onSelect={onGearBoxSelect}
+                    onSelect={onChange}
                 />
             </Form.Row>
             <Form.Row>

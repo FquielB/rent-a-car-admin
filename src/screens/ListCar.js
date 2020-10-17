@@ -20,6 +20,7 @@ export default function ListCar() {
         const headers = {
             'Authorization': authTokens.token
         }
+        
         axios.get('https://rent-a-car-uade.herokuapp.com/vehicles', { headers })
         .then( 
             res => {
