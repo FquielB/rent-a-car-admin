@@ -1,5 +1,5 @@
-.listCard {
-    background-color: #FFCCCC !important;
+.listCard > .card {
+    background-color: #FFCCCC;
     width: 80%;
     left: 10%;
     padding: 15px;
@@ -8,15 +8,15 @@
     border-style: solid;
 }
 
-.vehicle {
+.vehicle > .list-group-item {
     margin-bottom: 8px;
-    display: flex!important;
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.listItemBtn {
-    padding: 20px 0!important;
+.listItemBtn > .ant-btn {
     margin-left: 20px;
     width: 150px;
+    height: 50px;
 }

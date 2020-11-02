@@ -12,3 +12,11 @@ export const AUTONOMY = "autonomy"
 export const GEARBOX = "gearBox"
 export const EXTRAS = "extras"
 export const ACTIVE = "active"
+export const LICENSEPLATE = "licensePlate"
+
+
+
+export const fieldValidations = {
+    // eslint-disable-next-line
+    required: 'Por favor complete: ${label}',
+};

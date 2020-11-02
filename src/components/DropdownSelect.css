@@ -1,3 +1,4 @@
 .dropdown{
-    margin: 0 30px 30px 30px;
+    margin: 30px 30px !important;
+    min-width: 16rem;
 }

@@ -1,33 +1,40 @@
 import React from 'react'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
-
+import { Select } from 'antd'
+import FormItem from 'antd/lib/form/FormItem'
 import './DropdownSelect.css'
 
-export default function DropdownSelect({ data, onSelect, title, className="", name }) {
-    return (
-        <DropdownButton 
-            className={`dropdown ${className}`}
-            title={title}>{
-                data ?
-                data.map ?
-                    data.map( value => 
-                            <Dropdown.Item 
-                                name={name}
-                                as="button"
-                                onClick={onSelect}
-                                key={value.id}
-                                id={value.id}
-                                value={value.name ? value.name : value.acronimo}
-                            >
-                                {value.name ? value.name : value.acronimo}
-                            </Dropdown.Item>
-                        )
-                    :
-                    null
-                :
-                null
-            }
 
-        </DropdownButton>
+export default function DropdownSelect({ data, label, className="", name, placeholder, rules, onChange, mode=null }) {
+    const { Option } = Select;
+
+    return (
+        <FormItem
+            className={`dropdown ${className}`}
+            name={name}
+            label={label}
+            rules={rules}
+        >
+            <Select 
+                mode={mode}
+                placeholder={placeholder}
+                onChange={onChange}
+            >
+                {
+                    data ? 
+                        data.map( (value, index) => {
+                                    if(value.id)
+                                        return <Option key={index} value={value.name}>
+                                                {value.name}
+                                            </Option>
+                                    else
+                                        return <Option key={index} value={value}>
+                                                    {value}
+                                                </Option>
+                                }
+                            )
+                        : null
+                }
+            </Select>
+        </FormItem>
     )
 }

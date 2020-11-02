@@ -1,12 +1,37 @@
 .header {
     text-align: left;
     font-weight: bold;
-    font-size: 20px;
     height: 70px;
-    background: #DE9292;
+    background: #DE92927e;
     border-width: 0px;
     border-bottom-width: 1px;
     border-style: solid;
-    line-height: 70px;
+    border-color: rgba(0, 0, 0, 0.315);
     margin-bottom: 70px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionButton > .ant-btn {
+    margin-right: 20px;
+    font-size: 20px;
+    height: 40px;
+    font-weight: 500;
+}
+
+.headerTitle {
+    font-size: 25px;
+    margin-top: 18px;
+}
+
+.backText > .anticon {
+    vertical-align: inherit;
+    margin-right: 5px;
+}
+
+.rightButton {
+    margin-left: auto;
 }

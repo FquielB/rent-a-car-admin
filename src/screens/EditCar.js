@@ -1,22 +1,14 @@
 import React from 'react'
-import { Header, CarForm } from '../components'
-import axios from 'axios'
+import { Header, FormData } from '../components'
+import { axiosVehicle } from '../axios/AxiosInstances'
 import { useHistory } from 'react-router-dom'
-import { useAuth } from '../context/auth'
 
 export default function EditCar() {
 
     const history = useHistory();
 
-    const  { authTokens } = useAuth();
-
     const onFinish = carData => {
-        
-        const headers = {
-            'Authorization': authTokens.token
-        }
-
-        axios.put(`https://rent-a-car-uade.herokuapp.com/vehicles/${carData.vehicle.id}`, carData , { headers })
+        axiosVehicle.put(`https://rent-a-car-uade.herokuapp.com/vehicles/${carData.vehicle.id}`, carData )
         .catch(error => alert("no se ha podido editar el auto", error))
         history.goBack();
     }
@@ -24,7 +16,7 @@ export default function EditCar() {
     return (
         <div>
             <Header title="Editar Auto"/>
-            <CarForm onFinish={onFinish} />
+            <FormData onFinish={onFinish} />
         </div>
     )
 }
