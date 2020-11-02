@@ -1,18 +1,21 @@
 import React from 'react'
-import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
-
+import { Input as InputData } from 'antd'
+import FormItem from 'antd/lib/form/FormItem'
 import './Input.css'
 
-export default function Input({ label, placeholder, onChange, type, value, className="" }) {
+export default function Input({ label, placeholder, type, className="", name, rules, onChange=null }) {
     return (
-        <FormGroup className={`input ${className}`} >
-            <FormLabel>{label}</FormLabel>
-            <FormControl 
+        <FormItem
+            className={`input ${className}`}
+            label={label}
+            name={name}
+            rules={rules}
+        >
+            <InputData 
                 type={type}
                 placeholder={placeholder}
-                onChange={e => onChange(e.target.value)}
-                value={value}
-                />
-        </FormGroup>
+                onChange={onChange ? e => onChange(e.target.value) : null}
+            />
+        </FormItem>
     )
 }

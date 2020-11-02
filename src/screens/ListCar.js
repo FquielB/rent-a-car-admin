@@ -1,61 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Vehicles, Footer, Input } from '../components';
-import axios from 'axios'
-import { useAuth } from '../context/auth'
+import { Header, Vehicles, Footer, Input, LinkButton } from '../components';
+import { Affix } from 'antd';
+import { CarOutlined, PlusOutlined } from '@ant-design/icons'
+import { getVehicles, deleteVehicle } from '../utils/Functions'
 
-import './ListCar.css'
+import './ListCar.css';
+
 
 export default function ListCar() {
-    const [ vehicles , setVehicles ] = useState(null)
-    const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles)
-
-    const { authTokens } = useAuth();
+    const [ vehicles, setVehicles ] = useState(null);
+    const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles);
+    
 
     useEffect(() => {
-        getVehicles()
-    }, [])
-    
-    const getVehicles = () => 
-    {
-        const headers = {
-            'Authorization': authTokens.token
-        }
-        axios.get('https://rent-a-car-uade.herokuapp.com/vehicles', { headers })
-        .then( 
-            res => {
-                setVehicles(res.data.vehicles)
-                setFilteredVehicles(res.data.vehicles)
-            })
-        .catch( error => alert("Un error ha ocurrido", error))
-    }
+        loadList()
+    }, []);
 
     
-    const onDelete = carId => {
-        const headers = {
-            'Authorization': authTokens.token
-        }
-        console.log(headers)
-        axios.delete(`https://rent-a-car-uade.herokuapp.com/vehicles/${carId}`, { headers })
-        .then(alert("El auto ha sido eliminado"))
-        .catch(error => alert("El auto no ha podido ser eliminado", error))
-        setVehicles(null)
-        getVehicles()
+    const onDelete = id => {
+        deleteVehicle(id).then(res => loadList());
+    };
+
+    const loadList = () => {
+        setVehicles(null);
+        getVehicles().then(vehiclesList => {
+            setVehicles(vehiclesList);
+            setFilteredVehicles(vehiclesList);
+        });
     }
+
+
 
     const processFilter = value => {
-        setFilteredVehicles(vehicles.filter(vehicle => vehicle.brand.includes(value)))
-    }
+        setFilteredVehicles(vehicles.filter(vehicle => vehicle.brand.toLowerCase().includes(value.toLowerCase())))
+    };
 
     return (
         <div className="list">
-            <Header title="Lista de autos" />
-            <Input 
-                className="search"
-                placeholder="Buscar..."
-                onChange={processFilter}
-                 />
+            <Header 
+                title="Lista de autos"
+            >
+                <LinkButton className="reportButton">
+                    Ver Reportes
+                </LinkButton>
+            </Header>
+            <Affix offsetTop={120} className="floatingComponent">
+                <div className="addButton" >
+                    <LinkButton to="/addcar">
+                    
+                        <div className="addIcons">
+                            <CarOutlined />
+                            <PlusOutlined/>
+                        </div>
+                    </LinkButton>
+                </div>
+            </Affix>
+            <div className="search">
+                <Input 
+                    placeholder="Buscar..."
+                    onChange={processFilter}
+                        />
+            </div>
             <Vehicles vehicles={filteredVehicles} onDelete={onDelete} />
             <Footer />
         </div>
     )
-}
+};

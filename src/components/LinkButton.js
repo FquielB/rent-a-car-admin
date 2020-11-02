@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button } from 'antd';
 
-export default function LinkButton({ size="lg", to="/", content="", className="", onClick }) {
+export default function LinkButton({ size="lg", to="/", children, className="", onClick }) {
     const history = useHistory();
 
     return (
@@ -12,8 +12,9 @@ export default function LinkButton({ size="lg", to="/", content="", className=""
                 if(onClick)
                     onClick()
             }}
-            className={className}>
-            {content}   
+            className={className}
+        >
+            {children}   
         </Button>
     )
 }

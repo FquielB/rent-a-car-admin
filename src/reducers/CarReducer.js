@@ -1,13 +1,14 @@
-import { ADD_CAR_DATA, DELETE_CAR_DATA } from '../actions/Actions'
+import { ADD_CAR_DATA, DELETE_CAR_DATA } from '../actions/Actions';
 
-var initialState = null
+
+var initialState = {}
 
 export default function CarReducer (state = initialState, action) {
     switch(action.type){
         case ADD_CAR_DATA:
-            return Object.assign({}, action.payload)
+            return action.payload
         case DELETE_CAR_DATA:
-            return null
+            return initialState
         default:
             return state
     }
