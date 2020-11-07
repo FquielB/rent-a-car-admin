@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux'
-import { Form, Button, Card, Upload, message } from 'antd';
+import { Form, Button, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
-import { Input, DropdownSelect } from '.';
+import { Input, DropdownSelect, DataHolder } from '.';
 import { formatDataToForm } from '../utils/Functions';
 import { DELETE_CAR_DATA } from '../actions/Actions';
 import { 
@@ -27,14 +27,16 @@ import {
     getBrands,
     getExtras,
     getModels,
-    getCategories
+    getCategories,
+    getBoxTypes
 } from '../utils/Functions'
 
-import './FormData.css';
+import './VehicleForm.css';
 
 
-export default function FormData({ onFinish }) {
+export default function VehicleForm({ onFinish }) {
     const [ fieldsValues, setFieldValues ] = useState([]);
+    const [ image, setImage ] = useState(null);
     const dispatch = useDispatch();
     const [ form ] = useForm();
     const statedVehicle = useSelector(state => state)
@@ -45,14 +47,17 @@ export default function FormData({ onFinish }) {
     const [ availableAirports, setAvailableAiports ] = useState(null);
     const [ availableCategories, setAvailableCategories ] = useState(null);
     const [ availableExtras, setAvailableExtras ] = useState(null);
-
+    const [ boxTypes, setBoxTypes ] = useState(null);
     
 
-    const onFinishTEST = data => {
+    const processSubmit = (data) => {
         const formData = {
             vehicle: data
-        }
-        console.log(formData)
+        };
+        const imageForm = {
+            image: image
+        };
+        onFinish(formData, imageForm);
     };
 
     useEffect(() => {
@@ -62,6 +67,8 @@ export default function FormData({ onFinish }) {
         getAirports().then(airports  => setAvailableAiports(airports));
         getCategories().then(categories  => setAvailableCategories(categories));
         getExtras().then(extras  => setAvailableExtras(extras));
+
+        getBoxTypes().then(boxTypes => setBoxTypes(boxTypes));
 
         return () => {
             dispatch({ type: DELETE_CAR_DATA });
@@ -78,22 +85,27 @@ export default function FormData({ onFinish }) {
         getModels(id).then(models => setAvailableModels(models));
     }
 
-    const onImageUploading = info => {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
+    const onFileUploading = ({ file, onSuccess }) => {
+        try {
+            let fileData = new FormData();
+            fileData.set(
+                'image',
+                file,
+                `${Date.now()}-${file.name}`
+            );
+            setImage(fileData);
+            onSuccess("ok");
         }
-        if (info.file.status === 'done') {
-        message.success(`La imagen ${info.file.name} se ha subido correctamente!`);
-        } else if (info.file.status === 'error') {
-        message.error(`La imagen ${info.file.name} no ha podido ser subida`);
-        } 
+        catch{
+            onSuccess("Failed")
+        }
     };
 
+   
     return (
-        <div className="formCard">
-            <Card>
+        <DataHolder>
                 <Form
-                    onFinish={onFinishTEST}
+                    onFinish={processSubmit}
                     fields={fieldsValues}
                     validateMessages={fieldValidations}
                     layout="vertical"
@@ -144,7 +156,7 @@ export default function FormData({ onFinish }) {
                                 name={GEARBOX}
                                 label="Tipo de caja"
                                 placeholder="Seleccione el tipo de caja"
-                                data={[ "automático", "manual" ]}
+                                data={boxTypes}
                                 rules={[{
                                     required: true
                                 }]}   
@@ -158,6 +170,7 @@ export default function FormData({ onFinish }) {
                                 rules={[{
                                     required: true
                                 }]}
+                                min={0}
                             />
                             <Input 
                                 name={AUTONOMY}
@@ -168,6 +181,7 @@ export default function FormData({ onFinish }) {
                                 rules={[{
                                     required: true
                                 }]}
+                                min={0}
                             />
                             <Input 
                                 name={CAPACITY}
@@ -178,6 +192,7 @@ export default function FormData({ onFinish }) {
                                 rules={[{
                                     required: true
                                 }]}
+                                min={0}
                             />
                     </div>
                     <div className="formRow4Columns">
@@ -191,6 +206,7 @@ export default function FormData({ onFinish }) {
                                 rules={[{
                                     required: true
                                 }]}
+                                min={0}
                             />
                             <Input 
                                 name={PRICE}
@@ -202,6 +218,7 @@ export default function FormData({ onFinish }) {
                                 rules={[{
                                     required: true
                                 }]}
+                                min={0}
                             />
                             <Form.Item
                                 name={URL}
@@ -210,7 +227,7 @@ export default function FormData({ onFinish }) {
                                 valuePropName="Filelist"
                             >
                                 <Upload 
-                                    onChange= {onImageUploading}
+                                    customRequest={onFileUploading}
                                 >
                                     <Button icon={<UploadOutlined />}>Haz click para subir una imagen!</Button>
                                 </Upload>
@@ -233,13 +250,13 @@ export default function FormData({ onFinish }) {
                             rules={[{
                                 required: true
                             }]}
+                            min={0}
                         />
                     </div>
                     <Button className="finishButton" htmlType="submit">
                         Finalizar
                     </Button>
                 </Form>
-            </Card>
-        </div>
+            </DataHolder>
     )
 }

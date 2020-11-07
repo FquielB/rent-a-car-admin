@@ -1,6 +1,6 @@
 import React from 'react'
-import { Header, FormData } from '../components'
-import { axiosVehicle } from '../axios/AxiosInstances'
+import { Header, VehicleForm } from '../components'
+import { createCar } from '../utils/Functions'
 import { useHistory } from 'react-router-dom'
 
 import './AddCar.css'
@@ -9,17 +9,17 @@ export default function AddCar() {
     const history = useHistory();
 
 
-    const onFinish = carData => {
-        console.log("agregado: ", carData)
-        axiosVehicle.post('https://rent-a-car-uade.herokuapp.com/vehicles', carData)
-        history.goBack();
+    const onFinish = (carData, image) => {
+        createCar(carData, image)
+        .then(res => history.goBack())
+        .catch(error => alert(error))   
     }
     
     
     return (
         <div>
             <Header title="Nuevo Auto"/>
-            <FormData onFinish={onFinish} />
+            <VehicleForm onFinish={onFinish} />
         </div>
     )
 }

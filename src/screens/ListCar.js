@@ -10,7 +10,6 @@ import './ListCar.css';
 export default function ListCar() {
     const [ vehicles, setVehicles ] = useState(null);
     const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles);
-    
 
     useEffect(() => {
         loadList()
@@ -40,7 +39,7 @@ export default function ListCar() {
             <Header 
                 title="Lista de autos"
             >
-                <LinkButton className="reportButton">
+                <LinkButton to="/report" className="reportButton">
                     Ver Reportes
                 </LinkButton>
             </Header>

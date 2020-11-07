@@ -19,56 +19,114 @@ export const formatDataToForm = data => {
     return formattedDataToForm;
 }
 
+
 export const getVehicles = () => 
     new Promise (resolve => 
-            axiosVehicle.get('https://rent-a-car-uade.herokuapp.com/vehicles')
+            axiosVehicle.get('/vehicles')
             .then( res => resolve(res.data.vehicles))
-            .catch( error => alert("Un error ha ocurrido", error))
+            .catch( error => console.log(error, "Recargando Pagina..."))
     );
 
 export const deleteVehicle = id => 
-    new Promise(resolve => axiosVehicle.delete(`https://rent-a-car-uade.herokuapp.com/vehicles/${id}`)
+    new Promise(resolve => axiosVehicle.delete(`/vehicles/${id}`)
         .then(res => {
             alert("El auto ha sido eliminado");
             resolve(res);
         })
-        .catch(error => alert("El auto no ha podido ser eliminado", error))
+        .catch(error => console.log(error, "Recargando Pagina..."))
     );
 
 
 export const getBrands = () =>
     new Promise (resolve =>
-        axiosVehicle.get('https://rent-a-car-uade.herokuapp.com/brands')
+        axiosVehicle.get('/brands')
         .then( res => resolve(res.data.brands))
-        .catch( error => alert("No se han podido obtener marcas", error ))
+        .catch( error => console.log(error, "Recargando Pagina..."))
     );
 
 export const getAirports = () =>
     new Promise (resolve =>
-        axiosAirport.get('https://itinerarios-back.herokuapp.com/itinerarios/rest/aeropuertos/')
-        .then( res => resolve(res.data))
+        axiosAirport.get('/aeropuertos/')
+        .then( res => {
+            const airportsArray= [];
+            res.data.forEach(airport => {
+                airportsArray.push({id: airport.id, name: airport.acronimo})
+            })
+            resolve(airportsArray)
+        })
         .catch(error => alert("No se han podido obtener los aeropuertos", error))
     );
 
 export const getExtras = () =>
     new Promise(resolve =>
-        axiosVehicle.get('https://rent-a-car-uade.herokuapp.com/extras')
+        axiosVehicle.get('/extras')
         .then(res => resolve(res.data.extras))
-        .catch( error => alert("No se han podido obtener las categorias", error))
+        .catch( error => console.log(error, "Recargando Pagina..."))
     );
 
 
 export const getCategories = () =>
     new Promise(resolve => 
-        axiosVehicle.get('https://rent-a-car-uade.herokuapp.com/categories')
+        axiosVehicle.get('/categories')
         .then(res => resolve(res.data.categories))
-        .catch( error => alert("No se han podido obtener las categorias", error))
+        .catch( error => console.log(error, "Recargando Pagina..."))
     );
 
 
 export const getModels = id =>
     new Promise(resolve => 
-        axiosVehicle.get(`https://rent-a-car-uade.herokuapp.com/models/${id}`)
+        axiosVehicle.get(`/models/${id}`)
         .then( res => resolve(res.data.models))
-        .catch( error => alert("No se han podido obtener marcas", error ))
+        .catch( error => console.log(error, "Recargando Pagina..."))
     );
+
+export const getBoxTypes = () => 
+    new Promise(resolve => 
+        resolve([{id: 1, name: 'automatico'},{id:2, name: 'manual'}]))
+
+export const createCar = (carData, image) => 
+    new Promise((resolve, reject) => {
+        let carId=null;
+        axiosVehicle.post('/vehicles', carData)
+        .then(res => {
+           if(image)
+           {
+                console.log(res.data)
+                carId = res.data.id
+                axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
+                .then(res => {
+                    console.log(res.data)
+                    carData.url=res.data.image
+                    axiosVehicle.put(`/vehicles/${carId}`, carData)
+                    .then(res => resolve(res))
+                    .catch(error => reject(error))
+                })
+                .catch(error => reject(error))
+            }
+            else
+                resolve()
+        }).catch(error => reject(error));
+    })
+
+    export const updateCar = (carData, image) => 
+    new Promise((resolve, reject) => {
+        let carId=null;
+        axiosVehicle.put(`/vehicles/${carData.vehicle.id}`, carData)
+        .then(res => {
+           if(image)
+           {
+                carId = res.data.id
+                axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
+                .then(res => {
+                    console.log(res.data)
+                    carData.url=res.data.image
+                    axiosVehicle.put(`/vehicles/${carId}`, carData)
+                    .then(res => resolve(res))
+                    .catch(error => reject(error))
+                })
+                .catch(error => reject(error))
+            }
+            else
+                resolve()
+        }).catch(error => reject(error));
+    })

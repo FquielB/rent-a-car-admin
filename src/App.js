@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddCar, EditCar, ListCar, Login} from './screens';
+import { AddCar, EditCar, ListCar, Login, Report} from './screens';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
@@ -19,6 +19,7 @@ function App() {
               <PrivateRoute exact path="/addcar" component={AddCar} />
               <PrivateRoute exact path="/editcar" component={EditCar} />
               <PrivateRoute exact path="/" component={ ListCar } />
+              <PrivateRoute exact path="/report" component={ Report } />
               <Route render={() => <Redirect to="/login" />} />
             </Switch>
         </Router>

@@ -1,0 +1,8 @@
+.chartsRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.dataHolder {
+    width: 1000px;
+}

@@ -4,7 +4,7 @@ import FormItem from 'antd/lib/form/FormItem'
 import './DropdownSelect.css'
 
 
-export default function DropdownSelect({ data, label, className="", name, placeholder, rules, onChange, mode=null }) {
+export default function DropdownSelect({ data, label, className="", name, placeholder, rules, onChange, mode=null, value }) {
     const { Option } = Select;
 
     return (
@@ -18,18 +18,14 @@ export default function DropdownSelect({ data, label, className="", name, placeh
                 mode={mode}
                 placeholder={placeholder}
                 onChange={onChange}
+                value={value}
             >
                 {
                     data ? 
                         data.map( (value, index) => {
-                                    if(value.id)
-                                        return <Option key={index} value={value.name}>
-                                                {value.name}
-                                            </Option>
-                                    else
-                                        return <Option key={index} value={value}>
-                                                    {value}
-                                                </Option>
+                                    return <Option key={index} value={value.name}>
+                                            {value.name}
+                                        </Option>
                                 }
                             )
                         : null

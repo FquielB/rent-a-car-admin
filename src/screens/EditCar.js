@@ -1,22 +1,23 @@
 import React from 'react'
-import { Header, FormData } from '../components'
-import { axiosVehicle } from '../axios/AxiosInstances'
+import { Header, VehicleForm } from '../components'
+import { updateCar } from '../utils/Functions'
 import { useHistory } from 'react-router-dom'
 
-export default function EditCar() {
+import './EditCar.css'
 
+export default function EditCar() {
     const history = useHistory();
 
-    const onFinish = carData => {
-        axiosVehicle.put(`https://rent-a-car-uade.herokuapp.com/vehicles/${carData.vehicle.id}`, carData )
-        .catch(error => alert("no se ha podido editar el auto", error))
-        history.goBack();
+    const onFinish = (carData, image) => {
+        updateCar(carData, image)
+        .then( res => history.goBack())
+        .catch(error => alert(error))
     }
 
     return (
         <div>
             <Header title="Editar Auto"/>
-            <FormData onFinish={onFinish} />
+            <VehicleForm onFinish={onFinish} />
         </div>
     )
 }
