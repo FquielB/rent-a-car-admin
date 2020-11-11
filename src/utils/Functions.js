@@ -23,7 +23,9 @@ export const formatDataToForm = data => {
 export const getVehicles = () => 
     new Promise (resolve => 
             axiosVehicle.get('/vehicles')
-            .then( res => resolve(res.data.vehicles))
+            .then( res => {
+                console.log(res.data.vehicles)
+                resolve(res.data.vehicles)})
             .catch( error => console.log(error, "Recargando Pagina..."))
     );
 
@@ -84,14 +86,22 @@ export const getBoxTypes = () =>
     new Promise(resolve => 
         resolve([{id: 1, name: 'automatico'},{id:2, name: 'manual'}]))
 
+
+export const getReport = airport => 
+    new Promise(resolve => 
+        axiosVehicle.get(`/report?airport=${airport}`)
+        .then(res => resolve(res))
+        .catch(err => console.log(err))
+    );
+
+
 export const createCar = (carData, image) => 
     new Promise((resolve, reject) => {
         let carId=null;
         axiosVehicle.post('/vehicles', carData)
         .then(res => {
-           if(image)
+           if(image.image)
            {
-                console.log(res.data)
                 carId = res.data.id
                 axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
                 .then(res => {
@@ -113,7 +123,7 @@ export const createCar = (carData, image) =>
         let carId=null;
         axiosVehicle.put(`/vehicles/${carData.vehicle.id}`, carData)
         .then(res => {
-           if(image)
+           if(image.image)
            {
                 carId = res.data.id
                 axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })

@@ -51,6 +51,7 @@ export default function VehicleForm({ onFinish }) {
     
 
     const processSubmit = (data) => {
+        data = {...data, active: true}
         const formData = {
             vehicle: data
         };
@@ -88,7 +89,7 @@ export default function VehicleForm({ onFinish }) {
     const onFileUploading = ({ file, onSuccess }) => {
         try {
             let fileData = new FormData();
-            fileData.set(
+            fileData.append(
                 'image',
                 file,
                 `${Date.now()}-${file.name}`
