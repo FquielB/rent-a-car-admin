@@ -19,7 +19,7 @@ axiosVehicle.interceptors.response.use(response => {
         {
             originalReq._retry = true;
 
-            let res = fetch('https://ssoia.herokuapp.com/JWT/refresh', {
+            fetch('https://ssoia.herokuapp.com/JWT/refresh', {
                 method: 'GET',
                 mode: 'cors',
                 cache: 'no-cache',
@@ -31,53 +31,14 @@ axiosVehicle.interceptors.response.use(response => {
                 },
                 redirect: 'follow',
                 referrer: 'no-referrer'
-            }).then(res => res.json()).then(res => {
-                        localStorage.setItem('accessToken', JSON.stringify(res))
-                        window.location.reload();
-                    });
-
-            resolve(res);
+            }).then(res => res.json().then(res => {
+                var newToken = JSON.stringify(res);
+                newToken.includes("\"status\":500") ? localStorage.clear() : localStorage.setItem('accessToken')  
+                window.location.reload();
+                return axiosVehicle(originalReq);
+            }))
         }
-
+        localStorage.clear();
         return reject(err);
     });
-    
-    
-    //SE DEBE LLAMAR AL BACK PARA VALIDAR TOKEN EN UN USE EFFECT EN APP, ACA SE DEBE HACER EL REFRESH TOKEN
-//     return new Promise((resolve, reject) => {
-//         const originalReq = err.config;
-//         if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest )
-//         {
-//             originalReq._retry = true;
-
-//             let res = fetch('http://localhost:8080/api/v1/auth/refresh', {
-//                 method: 'POST',
-//                 mode: 'cors',
-//                 cache: 'no-cache',
-//                 credentials: 'same-origin',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     'Authorization': localStorage.getItem("token")
-//                 },
-//                 redirect: 'follow',
-//                 referrer: 'no-referrer',
-//                 body: JSON.stringify({
-//                     token: localStorage.getItem("token"),
-//                     refresh_token: localStorage.getItem("refresh_token")
-//                 }),
-//             }).then(res => res.json()).then(res => {
-//                 console.log(res);
-//                 localStorage.setItem('tokens', res.token)
-//                 originalReq.headers['Authorization'] = res.token;
-
-//                 return axios(originalReq);
-//             });
-
-
-        //      resolve(res);
-        //  }
-
-
-//         return Promise.reject(err);
-//     });
- });
+});
