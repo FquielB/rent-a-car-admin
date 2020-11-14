@@ -193,7 +193,7 @@ export default function VehicleForm({ onFinish }) {
                             <Input 
                                 name={AUTONOMY}
                                 className="inputForm"
-                                label="Autonomia"
+                                label="Autonomia (km/h)"
                                 type="number"
                                 placeholder="Ingrese.."
                                 rules={[{
@@ -217,7 +217,7 @@ export default function VehicleForm({ onFinish }) {
                             <Input 
                                 name={TRUNKCAPACITY}
                                 className="inputForm"
-                                label="Capacidad del baul"
+                                label="Capacidad del baul (en litros)"
                                 type="number"
                                 placeholder="Ingrese.."
                                 defaultValue={0}
@@ -229,7 +229,7 @@ export default function VehicleForm({ onFinish }) {
                             <Input 
                                 name={PRICE}
                                 className="inputForm"
-                                label="Precio"
+                                label="Precio (por día)"
                                 type="number"
                                 placeholder="Ingrese.."
                                 defaultValue={0}
