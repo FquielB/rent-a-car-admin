@@ -37,7 +37,7 @@ export default function Report() {
                     name="airport"
                     label="Aeropuerto"
                     data={availableAirports}
-                    value={availableAirports[availableAirports.map(airport => airport.name).indexOf('Todos')]}
+                    defaultValue="Todos"
                     placeholder="Seleccione el aeropuerto deseado..."
                     onChange={onAirportSelect}          
                 />

@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Header, Vehicles, Footer, Input, LinkButton, DropdownSelect } from '../components';
-import { Affix, Form } from 'antd';
+import { Affix, Button, Form } from 'antd';
 import { CarOutlined, PlusOutlined } from '@ant-design/icons'
-import { getVehicles, deleteVehicle, getAirports } from '../utils/Functions'
+import { getVehicles, deleteVehicle, getAirports, getBrands } from '../utils/Functions'
 
 import './ListCar.css';
+import { AIRPORT, BRAND, LICENSEPLATE } from '../utils/Constants';
 
 
 export default function ListCar() {
     const [ vehicles, setVehicles ] = useState(null);
     const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles);
     const [ availableAirports, setAvailableAirports ] = useState(null);
+    const [ availableBrands, setAvailableBrands ] = useState(null);
 
     useEffect(() => {
         loadList()
-        getAirports().then(airport => setAvailableAirports(airport))
+        getAirports().then(airports => {
+            airports.push({ id:0, name: "Todos" });
+            setAvailableAirports(airports);
+        });
+        getBrands().then(brands => {
+            brands.push({ id:0, name: "Todos" });
+            setAvailableBrands(brands)
+        });
+       
     }, []);
 
     
@@ -30,12 +40,12 @@ export default function ListCar() {
         });
     }
 
-    const processFilterBrand = value => {
-        setFilteredVehicles(vehicles.filter(vehicle => vehicle.brand.toLowerCase().includes(value.toLowerCase())))
-    };
+    const processFilter = filters => {
+        let filteredList = vehicles.filter(vehicle => (vehicle[LICENSEPLATE].toLowerCase().includes(filters[LICENSEPLATE].toLowerCase()))
+                                                        && (filters[BRAND] === "Todos" ? vehicle : vehicle[BRAND] === filters[BRAND])
+                                                        && (filters[AIRPORT] === "Todos" ? vehicle : vehicle[AIRPORT] === filters[AIRPORT]));
 
-    const processFilterAirport = value => {
-        setFilteredVehicles(filteredVehicles.filter(vehicle => vehicle.brand.toLowerCase().includes(value.toLowerCase())))
+        setFilteredVehicles(filteredList)
     }
 
     return (
@@ -59,17 +69,34 @@ export default function ListCar() {
                 </div>
             </Affix>
             <div className="search">
-                <Form>
-                <Input 
-                    placeholder="Buscar..."
-                    onChange={processFilterBrand}
-                />
-                <DropdownSelect 
-                     label="Aeropuerto"
-                     placeholder="Seleccione el aeropuerto deseado"
-                     data={availableAirports}
-                     onChange={processFilterAirport}
-                />
+                <Form
+                    onFinish={processFilter}
+                    initialValues={{[LICENSEPLATE]: "", [AIRPORT]:"Todos", [BRAND]: "Todos"}}
+                    className="filters"
+                    >
+                    <div>
+                        <Input 
+                            name={LICENSEPLATE}
+                            label="Patente"
+                            placeholder="Buscar por patente..."
+                            className="plateFilter"
+                        />
+                        <div className="filterSelectRow">
+                            <DropdownSelect 
+                                name={AIRPORT}
+                                label="Aeropuerto"
+                                placeholder="Seleccione el aeropuerto deseado"
+                                data={availableAirports}
+                            />
+                            <DropdownSelect
+                                name={BRAND}
+                                label="Marca"
+                                placeholder="Seleccione la marca deseada"
+                                data={availableBrands}
+                            />
+                        </div>
+                    </div>
+                    <Button htmlType="submit" className="searchButton" >Buscar</Button>
                 </Form>       
             </div>
             <Vehicles vehicles={filteredVehicles} onDelete={onDelete} />

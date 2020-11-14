@@ -193,7 +193,7 @@ export default function VehicleForm({ onFinish }) {
                             <Input 
                                 name={AUTONOMY}
                                 className="inputForm"
-                                label="Autonomia (km/h)"
+                                label="Autonomia (km/l)"
                                 type="number"
                                 placeholder="Ingrese.."
                                 rules={[{

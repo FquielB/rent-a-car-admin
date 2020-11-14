@@ -28,3 +28,27 @@
     height: 50px;
     font-weight: bold;
 }
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.filters > .ant-form-item {
+    margin-bottom: 0px;
+}
+
+.filterSelectRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.plateFilter {
+    margin-bottom: 0px!important;
+}
+
+.searchButton {
+    margin-left: 20px;
+    width: 100px;
+}
