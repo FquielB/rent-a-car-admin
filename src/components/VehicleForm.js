@@ -238,6 +238,26 @@ export default function VehicleForm({ onFinish }) {
                                 }]}
                                 min={0}
                             />
+                            <Input 
+                                name={LICENSEPLATE}
+                                className="inputForm"
+                                label="Patente"
+                                placeholder="Ingrese.."
+                                defaultValue={0}
+                                rules={[{
+                                    required: true
+                                }]}
+                                min={0}
+                            />
+                    </div>
+                    <div className="formRow4Columns">
+                            <DropdownSelect
+                                name={EXTRAS}
+                                label="Extras"
+                                placeholder="Seleccione los extras deseados"
+                                data={availableExtras}
+                                mode="multiple"
+                            />
                             <Form.Item
                                 name={URL}
                                 label="Imagen"
@@ -253,26 +273,6 @@ export default function VehicleForm({ onFinish }) {
                                     <Button icon={<UploadOutlined />} >Haz click para subir una imagen!</Button>
                                 </Upload>
                             </Form.Item>
-                            <DropdownSelect
-                                name={EXTRAS}
-                                label="Extras"
-                                placeholder="Seleccione los extras deseados"
-                                data={availableExtras}
-                                mode="multiple"
-                            />
-                    </div>
-                    <div className="formRow4Columns">
-                        <Input 
-                            name={LICENSEPLATE}
-                            className="inputForm"
-                            label="Patente"
-                            placeholder="Ingrese.."
-                            defaultValue={0}
-                            rules={[{
-                                required: true
-                            }]}
-                            min={0}
-                        />
                     </div>
                     <Button className="finishButton" htmlType="submit" disabled={isLoading}>
                         {isLoading ? <LoadingOutlined /> : "Guardar" }
