@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux'
-import { Form, Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Button, Upload, Modal } from 'antd';
+import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
 import { Input, DropdownSelect, DataHolder } from '.';
 import { formatDataToForm } from '../utils/Functions';
@@ -29,7 +29,7 @@ import {
     getModels,
     getCategories,
     getBoxTypes
-} from '../utils/Functions'
+} from '../utils/Functions';
 
 import './VehicleForm.css';
 
@@ -37,10 +37,15 @@ import './VehicleForm.css';
 export default function VehicleForm({ onFinish }) {
     const [ fieldsValues, setFieldValues ] = useState([]);
     const [ image, setImage ] = useState(null);
+    const [ imageToLoad, setImageToLoad ] = useState([]);
+    
+    const [isLoading, setIsLoading] = useState(false);
+
     const dispatch = useDispatch();
     const [ form ] = useForm();
     const statedVehicle = useSelector(state => state)
 
+    const { error } = Modal;
 
     const [ availableBrands, setAvailableBrands] = useState(null);
     const [ availableModels, setAvailableModels] = useState(null);
@@ -48,17 +53,17 @@ export default function VehicleForm({ onFinish }) {
     const [ availableCategories, setAvailableCategories ] = useState(null);
     const [ availableExtras, setAvailableExtras ] = useState(null);
     const [ boxTypes, setBoxTypes ] = useState(null);
-    
+
 
     const processSubmit = (data) => {
-        data = {...data, active: true}
+        setIsLoading(true);
+        data.active= true
+        if(statedVehicle.id)
+            data.id = statedVehicle.id;
         const formData = {
-            vehicle: data
+            vehicle: data,
         };
-        const imageForm = {
-            image: image
-        };
-        onFinish(formData, imageForm);
+        onFinish(formData, image);
     };
 
     useEffect(() => {
@@ -68,7 +73,6 @@ export default function VehicleForm({ onFinish }) {
         getAirports().then(airports  => setAvailableAiports(airports));
         getCategories().then(categories  => setAvailableCategories(categories));
         getExtras().then(extras  => setAvailableExtras(extras));
-
         getBoxTypes().then(boxTypes => setBoxTypes(boxTypes));
 
         return () => {
@@ -102,6 +106,19 @@ export default function VehicleForm({ onFinish }) {
         }
     };
 
+    const validateFile = file => {
+        let fileExt = file.name.split(".");
+        fileExt = fileExt[fileExt.length - 1];
+        if((file.type === "image/jpeg" || file.type === "image/png") && ( fileExt==="png" || fileExt==="jpg" )){
+            let fileList = [file];
+            setImageToLoad(fileList);
+        }
+        else{
+            error({
+                title:"El archivo que subiste no es una imagen!"
+            })
+        }
+    }
    
     return (
         <DataHolder>
@@ -229,8 +246,11 @@ export default function VehicleForm({ onFinish }) {
                             >
                                 <Upload 
                                     customRequest={onFileUploading}
+                                    accept={[".png",".jpg"]}
+                                    fileList={imageToLoad}
+                                    beforeUpload={validateFile}
                                 >
-                                    <Button icon={<UploadOutlined />}>Haz click para subir una imagen!</Button>
+                                    <Button icon={<UploadOutlined />} >Haz click para subir una imagen!</Button>
                                 </Upload>
                             </Form.Item>
                             <DropdownSelect
@@ -254,8 +274,8 @@ export default function VehicleForm({ onFinish }) {
                             min={0}
                         />
                     </div>
-                    <Button className="finishButton" htmlType="submit">
-                        Finalizar
+                    <Button className="finishButton" htmlType="submit" disabled={isLoading}>
+                        {isLoading ? <LoadingOutlined /> : "Guardar" }
                     </Button>
                 </Form>
             </DataHolder>

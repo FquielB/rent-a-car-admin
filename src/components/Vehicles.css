@@ -3,8 +3,8 @@
     width: 80%;
     left: 10%;
     padding: 15px;
-    border-width: 0px;
     border-width: 1px;
+    border-radius: 20px;
     border-style: solid;
 }
 
@@ -13,10 +13,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    -webkit-box-shadow: 5px 5px 10px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 5px 5px 10px -7px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 10px -7px rgba(0,0,0,0.75);
+}
+
+.vehicle > .list-group-item:last-child {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.vehicle > .list-group-item:first-child {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .listItemBtn > .ant-btn {
     margin-left: 20px;
     width: 150px;
     height: 50px;
+}
+
+.dataSection {
+    width: 300px;
+    min-height: 80px;
+    border-right-color: #ffcccc;
+    border-right-width: 3px;
+    border-right-style: solid;
 }

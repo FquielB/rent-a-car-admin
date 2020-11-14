@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Vehicles, Footer, Input, LinkButton } from '../components';
-import { Affix } from 'antd';
+import { Header, Vehicles, Footer, Input, LinkButton, DropdownSelect } from '../components';
+import { Affix, Form } from 'antd';
 import { CarOutlined, PlusOutlined } from '@ant-design/icons'
-import { getVehicles, deleteVehicle } from '../utils/Functions'
+import { getVehicles, deleteVehicle, getAirports } from '../utils/Functions'
 
 import './ListCar.css';
 
@@ -10,9 +10,11 @@ import './ListCar.css';
 export default function ListCar() {
     const [ vehicles, setVehicles ] = useState(null);
     const [ filteredVehicles, setFilteredVehicles ] = useState(vehicles);
+    const [ availableAirports, setAvailableAirports ] = useState(null);
 
     useEffect(() => {
         loadList()
+        getAirports().then(airport => setAvailableAirports(airport))
     }, []);
 
     
@@ -28,11 +30,13 @@ export default function ListCar() {
         });
     }
 
-
-
-    const processFilter = value => {
+    const processFilterBrand = value => {
         setFilteredVehicles(vehicles.filter(vehicle => vehicle.brand.toLowerCase().includes(value.toLowerCase())))
     };
+
+    const processFilterAirport = value => {
+        setFilteredVehicles(filteredVehicles.filter(vehicle => vehicle.brand.toLowerCase().includes(value.toLowerCase())))
+    }
 
     return (
         <div className="list">
@@ -55,10 +59,18 @@ export default function ListCar() {
                 </div>
             </Affix>
             <div className="search">
+                <Form>
                 <Input 
                     placeholder="Buscar..."
-                    onChange={processFilter}
-                        />
+                    onChange={processFilterBrand}
+                />
+                <DropdownSelect 
+                     label="Aeropuerto"
+                     placeholder="Seleccione el aeropuerto deseado"
+                     data={availableAirports}
+                     onChange={processFilterAirport}
+                />
+                </Form>       
             </div>
             <Vehicles vehicles={filteredVehicles} onDelete={onDelete} />
             <Footer />

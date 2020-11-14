@@ -1,9 +1,10 @@
 import React from 'react'
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap'
-import { Button } from 'antd'
+import { Button, Image } from 'antd'
 import { LinkButton } from '.'
 import { useDispatch } from 'react-redux'
 import { ADD_CAR_DATA } from '../actions/Actions'
+import { LICENSEPLATE, BRAND, AIRPORT, MODEL, URL} from '../utils/Constants'
  
 import './Vehicles.css'
 
@@ -22,10 +23,24 @@ export default function Vehicles({ vehicles, onDelete }) {
                     {vehicles ?
                         vehicles.map((vehicle, index) => vehicle.active ? 
                             <div className="vehicle" key={index}>
-                                <ListGroupItem>
-                                    <div>
-                                        <p>{vehicle.brand}</p>
-                                        <p>{vehicle.model}</p>
+                                <ListGroupItem className="vehicleData">
+                                    <div  className="dataSection">
+                                        {   vehicle[URL]
+                                            && (typeof vehicle[URL]) === 'string'
+                                            && vehicle[URL].includes('https://firebasestorage.googleapis.com') 
+                                            ?
+                                        <Image 
+                                            height={180} 
+                                            src={vehicle[URL]}
+                                        />: <p>No tiene imagen</p>}
+                                    </div>
+                                    <div className="dataSection">
+                                        <p><b>Marca</b>: {vehicle[BRAND]}</p>
+                                        <p><b>Modelo</b>: {vehicle[MODEL]}</p>
+                                    </div>
+                                    <div  className="dataSection">    
+                                        <p><b>Patente</b>: {vehicle[LICENSEPLATE]}</p>
+                                        <p><b>Aeropuerto</b>: {vehicle[AIRPORT]}</p>
                                     </div>
                                     <div className="listItemBtn" >
                                         <LinkButton 

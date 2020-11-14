@@ -33,7 +33,7 @@ axiosVehicle.interceptors.response.use(response => {
                 referrer: 'no-referrer'
             }).then(res => res.json().then(res => {
                 var newToken = JSON.stringify(res);
-                newToken.includes("\"status\":500") ? localStorage.clear() : localStorage.setItem('accessToken')  
+                newToken.includes("\"status\":500") ? localStorage.clear() : localStorage.setItem('accessToken', newToken)  
                 window.location.reload();
                 return axiosVehicle(originalReq);
             }))

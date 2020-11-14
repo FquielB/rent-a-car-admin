@@ -24,7 +24,6 @@ export const getVehicles = () =>
     new Promise (resolve => 
             axiosVehicle.get('/vehicles')
             .then( res => {
-                console.log(res.data.vehicles)
                 resolve(res.data.vehicles)})
             .catch( error => console.log(error, "Recargando Pagina..."))
     );
@@ -100,15 +99,15 @@ export const createCar = (carData, image) =>
         let carId=null;
         axiosVehicle.post('/vehicles', carData)
         .then(res => {
-           if(image.image)
+           if(image)
            {
                 carId = res.data.id
                 axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
                 .then(res => {
-                    console.log(res.data)
-                    carData.url=res.data.image
+                    carData.vehicle.url=res.data.fileLocation
                     axiosVehicle.put(`/vehicles/${carId}`, carData)
-                    .then(res => resolve(res))
+                    .then(res => {
+                        resolve(res)})
                     .catch(error => reject(error))
                 })
                 .catch(error => reject(error))
@@ -120,17 +119,14 @@ export const createCar = (carData, image) =>
 
     export const updateCar = (carData, image) => 
     new Promise((resolve, reject) => {
-        let carId=null;
         axiosVehicle.put(`/vehicles/${carData.vehicle.id}`, carData)
         .then(res => {
-           if(image.image)
+           if(image)
            {
-                carId = res.data.id
-                axiosVehicle.post(`/vehicles/images/${carId}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
+                axiosVehicle.post(`/vehicles/images/${carData.vehicle.id}`, image, { headers: {'Content-Type': 'multipart/form-data' } })
                 .then(res => {
-                    console.log(res.data)
-                    carData.url=res.data.image
-                    axiosVehicle.put(`/vehicles/${carId}`, carData)
+                    carData.vehicle.url=res.data.fileLocation
+                    axiosVehicle.put(`/vehicles/${carData.vehicle.id}`, carData)
                     .then(res => resolve(res))
                     .catch(error => reject(error))
                 })

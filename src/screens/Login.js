@@ -67,7 +67,7 @@ export default function Login(props) {
                   required: true
                 }]}
               />
-              <Button size="lg" htmlType="submit" className="button">
+              <Button size="lg" htmlType="submit" className="button" disabled={isLoading}>
                               {isLoading ? <LoadingOutlined /> : <p>Login</p>}
               </Button>
             </Form>
