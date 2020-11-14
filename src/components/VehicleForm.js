@@ -115,7 +115,7 @@ export default function VehicleForm({ onFinish }) {
         }
         else{
             error({
-                title:"El archivo que subiste no es una imagen!"
+                title:"El archivo que elegiste no es una imagen!"
             })
         }
     }

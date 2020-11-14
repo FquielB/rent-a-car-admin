@@ -34,10 +34,23 @@
     height: 50px;
 }
 
+@media(max-width: 1660px ){
+    .listItemBtn > .ant-btn {
+        margin-top: 10px;
+    }
+}
+
 .dataSection {
     width: 300px;
     min-height: 80px;
     border-right-color: #ffcccc;
     border-right-width: 3px;
     border-right-style: solid;
+    padding-left: 10px;
+}
+
+.noImage {
+    color: red;
+    text-align: center;
+    margin-top: 25px;
 }

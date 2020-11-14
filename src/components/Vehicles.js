@@ -30,9 +30,8 @@ export default function Vehicles({ vehicles, onDelete }) {
                                             && vehicle[URL].includes('https://firebasestorage.googleapis.com') 
                                             ?
                                         <Image 
-                                            height={180} 
                                             src={vehicle[URL]}
-                                        />: <p>No tiene imagen</p>}
+                                        />: <p className="noImage" >No tiene imagen</p>}
                                     </div>
                                     <div className="dataSection">
                                         <p><b>Marca</b>: {vehicle[BRAND]}</p>
