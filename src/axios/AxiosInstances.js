@@ -39,6 +39,7 @@ axiosVehicle.interceptors.response.use(response => {
             }))
         }
         localStorage.clear();
+        window.location.reload();
         return reject(err);
     });
 });
